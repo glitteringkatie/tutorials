@@ -1,0 +1,172 @@
+@JulioBarros
+  - Likes beer
+  - E-string.com
+Why Elixir/Phoenix
+  -Reliable
+  - Highly concurrent
+  - Distributed
+  - It's really what the system helps you build, not the language
+  - Popular for:
+    -Chat
+    -Ad servers
+    -Banking
+    -IOT
+  - Came out of telecom
+  - Government mandate to make telephones ALWAYS available
+  - In telephone switches so they don't have to be rebooted
+  - Lots of transactions really quickly
+  - Popular with telephone-over-internet
+ When would /I/ use it?
+  - Nice for regular apps too
+  - really fast and concurrent
+  - reduce server count
+  - Concurrent API calls, file downloads, etc
+  - Background jobs (sending emails)
+  - Workflow type processing
+    - Step one may or may not work
+    - then step two takes a while
+    -etc
+  - Embedded systems
+    - Raspberry Pi
+  - General web apps
+    - Especially if you are using phoenix
+    - Switch from rails shops to phoenix shops
+    - Lose tools and experience with rails?? Why??
+      - Performance makes up for it!
+      - EVERYTHING is becoming real time!
+      - Elixir/Phoenix is nice for this!
+Roster
+  - Erlang: Ericson 1986
+  - BEAM - Erlang VM
+  - Elixir: Ruby-esque, targets BEAM, Jose Valim 2012
+    - Put a more accessible language on Erlang
+  - Phoenix: Web/PubSub/Channels, Chris McCord 2015
+    - Another one before, but this stuck
+    - Kind of like rails' role but not exactly
+  - Ecto: DB interface
+    - ORM
+    - Postgres is the main suported database
+  - mix: build tool
+  -iex: Interactive elixir
+  - ExUnit - testing
+  - Nerves: embedded elixir for like raspberry pi stuffo
+Mind Expanders
+  - Functional programming
+  - Immutable data
+  - Pattern matching <3 (guys this is the best I love it wow)
+  - Concurrency/parallelism w lightweight processes
+  - Messaging
+  - BEAM as OS
+    - Holds key-value store
+    - runs its own processes
+  - OTP/supervisors
+    - Zookeper?
+    - Console?
+    - these don't mean things to me
+Functional Programming
+  - Separates data and functions
+  - Immutable data
+  - First class functions
+  - Higher order functions
+Functions
+  - transform data
+  - composable and repeatable
+  - Don't modify state - no side effects
+  - Always return same value for same input
+  - organized into modules
+Data
+  - few basic types
+  - immutable
+  - maps, lists
+Concurrency
+  How systems handle it:
+  - single threaded (most)
+  - single threaded with async callbacks
+  - multi threaded
+  - processes (erlang/elixir)
+Processes
+  - BEAM starts up...
+  - Each CPU gets a thread
+  - On that thread they get a scheduler
+  - the system the schedules your task across all of the CPU/threads
+  - Not an OS-level process
+  - Groups of processes are applications
+  - Application to manage db, http, business logic
+  - Those make x number of processes
+  - Supervisor (OTP <3) restarts things when they fail
+  - Cheap af
+  - Isolated memory
+  - One scheduler (native thread) per CPU core
+  - Any number of processes
+  - short or long lived
+  - Communication via messages sent to pids
+  - OTP - common, tested patterns
+Fire and forget
+  - when process ends, it goes away! bye!!
+Short lived
+  - Something does something and we want a response
+  - spawn process
+  - give your pid to the process (here's my number call me maybe)
+  - when it is done it says things to you
+  - you do a recieve to get the messages back
+Long running
+  - No termintion, unlike Arnold
+  - Good listener!
+  - You have mail
+  - STAYIN' ALIVE
+  - Genserver is used for this often
+Not recurrsive (side-eye)
+Supervision
+  - process manages other processes
+  - always starts up new process when they die
+  - it's going to handle crashes well
+  - as best it can at least
+Applications
+  - Groups of supervisors
+Concurrency story
+  - super key
+  - any number of processes!
+  - people need to focus on OTP not on phoenix vs rails
+  - "advanced"
+LETS GET STARTED
+  - rake??
+  - web? lib?
+    - Web is for like http stuff
+    - lib is for like business logic stuff
+  - modles are light weight
+  - controllers handle web stuff
+  - channels in web handle websockets
+  - static file change js while phoenix is running and HOT RELOAD BABY
+  - views
+  - really mess with templates tbqh
+  - by default use html layout
+  - index page
+  - page_controller for file name but PageController for module name
+  - IO.puts "blah"
+  - h helps
+  - :observer.start is nice
+  - applications are erlang applications
+[] list
+{} tuples/nipples
+%{} map
+  - Map.keys m
+  - Map.values M
+  - Map.put m (returns stuff, doesn't fix things)
+  - %{m | age: 12} LIST TAILS MOTHER FUCKER YES
+[atom: "value"]
+  - treat like dictionary
+  - Keyword list is what we call it
+  - used a lot at the end of functions
+Structs are just maps, guys. compiler puts __struct__
+  defstruct [:brewery, :name]
+  polymorphism happnes????
+PATTERN MATCHING <3 <3 <3
+  - = is NOT ASSIGNMENT
+  - lhs = rhs
+  - not assigning, things match or sometimes get bound
+  - if you want to KEEP THINGS PINNED LIKE A REGULAR THING ^a
+  - destructuring but also pattern matching. You know, like haskell
+Function heads
+  - name and arity
+  - foo/1 v foo/2 v foo/3
+  - default params go at the end and are specified from left to right

@@ -1,0 +1,32 @@
+<h2>Listing beers</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Brewery</th>
+      <th>Description</th>
+      <th>Year</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for beer <- @beers do %>
+    <tr>
+      <td><%= beer.name %></td>
+      <td><%= beer.brewery %></td>
+      <td><%= beer.description %></td>
+      <td><%= beer.year %></td>
+
+      <td class="text-right">
+        <%= link "Show", to: beer_path(@conn, :show, beer), class: "btn btn-default btn-xs" %>
+        <%= link "Edit", to: beer_path(@conn, :edit, beer), class: "btn btn-default btn-xs" %>
+        <%= link "Delete", to: beer_path(@conn, :delete, beer), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<%= link "New beer", to: beer_path(@conn, :new) %>

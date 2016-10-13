@@ -1,0 +1,28 @@
+<h2>Show beer</h2>
+
+<ul>
+
+  <li>
+    <strong>Name:</strong>
+    <%= @beer.name %>
+  </li>
+
+  <li>
+    <strong>Brewery:</strong>
+    <%= @beer.brewery %>
+  </li>
+
+  <li>
+    <strong>Description:</strong>
+    <%= @beer.description %>
+  </li>
+
+  <li>
+    <strong>Year:</strong>
+    <%= @beer.year %>
+  </li>
+
+</ul>
+
+<%= link "Edit", to: beer_path(@conn, :edit, @beer) %>
+<%= link "Back", to: beer_path(@conn, :index) %>
