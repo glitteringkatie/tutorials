@@ -1,0 +1,86 @@
+@benjaminbrandt
+Using Ports
+
+Hooking JavaScript up to Elm
+
+The Issue
+- Elm doesn't have a package for my browser API!
+- I have previous JavaScript code and I want to use it!
+- Firebase/AWS sdk for JavaScript but WHAT ABOUT ME??
+Solution
+- Ports!
+- Ports are like commands and subscriptions
+- port check : String -> Cmd msg
+  - Use like a command
+- app.ports.check.subscribe(function() {stuff};
+Receive values
+- port suggestions : (List String -> msg) -> Sub msg
+  - Use like a subscription!
+You can send
+  - Lots of stuff!
+  - Basically anything, you're fine
+What about Errors???
+
+Basic Overview
+- Ports!
+- Ports are like commands and subscriptions
+- port check : String -> Cmd msg
+  - Use like a command
+- app.ports.check.subscribe(function() {stuff};
+Receive values
+- port suggestions : (List String -> msg) -> Sub msg
+  - Use like a subscription!
+You can send
+  - Lots of stuff!
+  - Basically anything, you're fine
+
+What about Errors???
+  - Customs and border protection
+  - Ports with ships and cargo!
+  - Pirates of the Caribbean is a good metaphore
+    - Brittish Elm-pire
+    - Strict rules on how things get sent and you know what is in the boxes
+    - We need more supplies!
+      - JavaScript aka Johnny Depp
+      - Pirates can't be trusted but they get the job done sometimes
+      - Not pure
+      - Don't know what you're getting
+      - Not typed!
+    - Elm sets up safe spaces and defines the cargo you want
+    - Elm has explicit contracts with JavaScript
+    - What about invalid cargo?
+      - Elm stops it in its track!
+      - Uncaught error: trying to send an unexpected value, exptected something
+          but got something else
+    - So no run time exceptions in elm code
+  - Elm doesn't care about JavaScript as long as Elm gets what it wants
+  - You can do a try catch on the JavaScript side
+  - Just handle issues on the JS side
+  - Otherwise EVERYTHING BLOWS UP
+
+
+How Elm Protects Your App
+
+Demo Time!
+github.com/halfzebra/create-elm-app
+Elm Reactor isn't nice with JavaScript stuff so just use the create-elm-app stuff
+
+port module Main exposing (..) //port is important here
+
+Flags
+  - programWithFlags for main
+  - init can take flags (init : Flags -> ( Model, Cmd Msg ) )
+  - Flags can be like user and token
+  - var app = Elm.MyApp.fullscreen({user, token})
+  - Nice so you can send info from JS to Elm
+Issues
+  - Import ports into your own module and then include ports through that module
+  - If your package uses ports you can't list it on the elm library
+    - If you need to, just put it on GitHub
+  - You still have to use JS :(
+
+benbrandt.github.io/elm-ports-presentation
+github.com/benbrandt/elm-audio-demo
+spectacle react build the slides
+
+maackle/elm-purememo
