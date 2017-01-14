@@ -2,6 +2,7 @@ module Players.Commands exposing (..)
 
 import Http
 import Json.Decode as Decode exposing ((:=))
+import Json.Encode as Encode
 import Task
 import Players.Models exposing (PlayerId, Player)
 import Players.Messages exposing (..)
@@ -31,12 +32,12 @@ saveUrl : PlayerId -> String
 saveUrl playerId =
   "http://localhost:4000/players/" ++ (toString playerId)
 
-saveTask : Player -> Task.Task Htpp.Error Player
+saveTask : Player -> Task.Task Http.Error Player
 saveTask player =
   let
       body =
         memberEncoded player
-                |> Enclude.encode 0
+                |> Encode.encode 0
                 |> Http.string
 
       config =
@@ -55,4 +56,13 @@ save player =
         |> Task.perform SaveFail SaveSuccess
 
 memberEncoded : Player -> Encode.Value
-
+memberEncoded player =
+  let
+      list =
+        [ ( "id", Encode.int player.id )
+        , ( "name", Encode.string player.name )
+        , ( "level", Encode.int player.level )
+        ]
+  in
+     list
+        |> Encode.object
