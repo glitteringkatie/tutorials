@@ -60,3 +60,75 @@ second (_, y, _) = y
 
 third :: (a, b, c) -> c
 third (_, _, z) = z
+
+head' :: [a] -> a
+head' [] = error "Can't call head on an empty list"
+head' (x:_) = x
+
+tell :: (Show a) => [a] -> String
+tell [] = ""
+tell (x:[]) = " the list has " ++ show x
+tell (x:xs) = " the list has " ++ show x ++ tell xs
+
+length'' :: (Num b) => [a] -> b
+length'' [] = 0
+length'' (_:xs) = 1 + length'' xs
+
+sum' :: (Num a) => [a] -> a
+sum' [] = 0
+sum' (x:xs) = x + sum' xs
+
+capital :: String -> String
+capital "" = "Empty strign"
+capital all@(x:xs) = "The first letter of " ++ all ++ " is " ++ [x]
+
+bmiTell :: (RealFloat a) => a -> String
+bmiTell bmi
+  | bmi <= 18.5 = "underweight"
+  | bmi <= 25.0 = "normal"
+  | bmi <= 30.0 = "overweight"
+  | otherwise   = "obese"
+
+bmiTell' :: (RealFloat a) => a -> a -> String
+bmiTell' weight height
+  | weight / height^2 <= 18.5 = "under"
+  | weight / height^2 <= 25.0 = "normal"
+  | weight / height^2 <= 30.0 = "over"
+  | otherwise                 = "obese"
+
+max' :: (Ord a) => a -> a -> a
+max' x y
+  | x > y     = x
+  | otherwise = y
+
+myCompare :: (Ord a) => a -> a -> Ordering
+a `myCompare` b
+  | a > b     = GT
+  | a == b    = EQ
+  | otherwise = LT
+
+bmiTell'' :: (RealFloat a) => a -> a -> String
+bmiTell'' weight height
+  | bmi <= skinny = "under"
+  | bmi <= normal = "normal"
+  | bmi<= fat     = "over"
+  | otherwise     = "obese"
+  where bmi = weight / height^2
+        skinny = 18.5
+        normal = 25.0
+        fat = 30.0
+
+initials :: String -> String -> String
+initials first last = [f] ++ ". " ++ [l] ++ "."
+  where (f:_) = first
+        (l:_) = last
+
+calcBmis :: (RealFloat a) => [(a, a)] -> [a]
+calcBmis xs = [bmi w h | (w, h) <- xs]
+  where bmi weight height = weight / height^2
+
+cylinder :: (RealFloat a) => a -> a -> a
+cylinder r h =
+  let sideArea = 2 * pi * r * h
+      topArea = pi * r^2
+   in sideArea + 2 * topArea
