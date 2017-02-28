@@ -9,7 +9,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "h2o2": "^5.4.0",
     "hapi": "^16.1.0",
-    "inert": "^4.1.0"
+    "inert": "^4.1.0",
+    "rot13-transform": "^1.0.0",
+    "vision": "^4.1.1"
   }
 }
