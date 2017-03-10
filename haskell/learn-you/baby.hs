@@ -132,3 +132,37 @@ cylinder r h =
   let sideArea = 2 * pi * r * h
       topArea = pi * r^2
    in sideArea + 2 * topArea
+
+-- Higher Order Functions -----
+chain :: (Integral a) => a -> [a]
+chain 1 = [1]
+chain n
+  | even n = n:chain (n `div` 2)
+  | odd n  = n: chain (n*3 + 1)
+
+numLongChains :: Int
+numLongChains = length (filter isLong (map chain [1..100]))
+  where isLong xs = length xs > 15
+
+-----------------------------------
+-- Higher Order Functions
+-----------------------------------
+sum'' :: (Num a) => [a] -> a
+sum'' xs = foldl (\acc x -> acc + x) 0 xs
+-- sum '' xs = foldl (+) 0
+
+elem' :: (Eq a) => a -> [a] -> Bool
+elem' y ys = foldl (\acc x -> if x == y then True else acc) False ys
+-- elem(y: Eq, ys: Eq[]) : Bool {
+--   return _.reduce(
+--     ys,
+--     (acc, x) => {
+--       if (x == y) return true;
+--       return acc
+--     },
+--     false
+--   );
+-- }
+
+map' :: (a -> b) -> [a] -> [b]
+map' f xs = foldr (\x acc -> f x : acc) [] xs
