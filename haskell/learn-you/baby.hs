@@ -1,4 +1,7 @@
 import qualified Data.Map as Map
+import System.Random
+import Data.List
+import Control.Applicative
 
 -----------------------------------
 -- Starting Out
@@ -294,6 +297,128 @@ data Frank a b = Frank {frankField :: b a} deriving (Show)
 instance Tofu Frank where
   tofu x = Frank x
 
+-------------------------------------
+-- I/O
+-------------------------------------
+
+threeCoins :: StdGen -> (Bool, Bool, Bool)
+threeCoins gen =
+  let (firstCoin, newGen) = random gen
+      (secondCoin, newGen') = random newGen
+      (thirdCoin, newGen'') = random newGen'
+  in  (firstCoin, secondCoin, thirdCoin)
+
+-------------------------------------
+-- Functionally Solving Problems
+-------------------------------------
+
+solveRPN :: String -> Float
+solveRPN = head . foldl foldingFunction [] . words
+  where foldingFunction (x:y:ys) "*" = (x * y):ys
+        foldingFunction (x:y:ys) "+" = (x + y):ys
+        foldingFunction (x:y:ys) "-" = (y - x):ys
+        foldingFunction (x:y:ys) "/" = (y / x):ys
+        foldingFunction (x:y:ys) "^" = (y ** x):ys
+        foldingFunction (x:xs) "ln" = log x:xs
+        foldingFunction xs "sum" = [sum xs]
+        foldingFunction xs numberString = read numberString:xs
+
+data Label = A | B | C deriving (Show)
+data Section = Section { getA :: Int
+                       , getB :: Int
+                       , getC :: Int
+                       } deriving (Show)
+type RoadSystem = [Section]
+type Path = [(Label, Int)]
+
+heathrowToLondon :: RoadSystem
+heathrowToLondon = [ Section 50 10 30
+                   , Section 5 90 20
+                   , Section 40 2 25
+                   , Section 10 8 0
+                   ]
+
+price :: Path -> Int
+price = sum . map snd
+
+roadStep :: (Path, Path) -> Section -> (Path, Path)
+roadStep (pathA, pathB) (Section a b c) =
+  let priceA = price pathA
+      priceB = price pathB
+      forwardPriceToA = priceA + a
+      crossPriceToA = priceB + b + c
+      forwardPriceToB = priceB + b
+      crossPriceToB = priceA + a + c
+      newPathToA = if forwardPriceToA <= crossPriceToA
+                      then (A,a):pathA
+                      else (C,c):(B,b):pathB
+      newPathToB = if forwardPriceToB <= crossPriceToB
+                      then (B,b):pathB
+                      else (C,c):(A,a):pathA
+  in  (newPathToA, newPathToB)
+
+optimalPath :: RoadSystem -> Path
+optimalPath roadSystem =
+  let (bestAPath, bestBPath) = foldl roadStep ([],[]) roadSystem
+  in  if price bestAPath <= price bestBPath
+          then reverse bestAPath
+          else reverse bestBPath
+
+------------------------------------------------
+-- Functors, Applicative Functors, and Monoids
+------------------------------------------------
+
+sequenceA' :: (Applicative f) => [f a] -> f [a]
+sequenceA' [] = pure []
+sequenceA' (x:xs) = (:) <$> x <*> sequenceA xs
+
+sequenceA'' :: (Applicative f) => [f a] -> f [a]
+sequenceA'' = foldr (liftA2 (:)) (pure [])
 
 
+------------------------------------------------
+-- A Fistful of Monads
+------------------------------------------------
 
+type Birds = Int
+type Pole = (Birds, Birds)
+
+landLeft :: Birds -> Pole -> Maybe Pole
+landLeft n (left, right)
+  | abs ((left + n) - right) < 4 = Just (left + n, right)
+  | otherwise                    = Nothing
+
+landRight :: Birds -> Pole -> Maybe Pole
+landRight n (left, right)
+  | abs (left - (n + right)) < 4 = Just (left, right + n)
+  | otherwise                    = Nothing
+
+routine :: Maybe Pole
+routine = return (0,0)
+        >>=landLeft 1
+        >>= landRight 4
+        >>= landLeft(-1)
+        >>= landRight (-2)
+
+(-:) :: a -> (a -> b) -> b
+x -: f = f x
+
+
+type KnightPos = (Int, Int)
+
+moveKnight :: KnightPos -> [KnightPos]
+moveKnight (c,r) = do
+  (c',r') <- [ (c+2, r-1)
+             , (c+2, r+1)
+             , (c-2, r-1)
+             , (c-2, r+1)
+             , (c+1, r-2)
+             , (c+1, r+2)
+             , (c-1, r-2)
+             , (c-1, r+2)
+             ]
+  guard (c' `elem` [1..8] && r' `elem` [1..8])
+  return (c',r')
+
+in3 :: KnightPos -> [KnightPos]
+in3 start = return start >>= moveKnight >>= moveKnight >>= moveKnight
